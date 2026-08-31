@@ -34,9 +34,11 @@ const multipliers =
 var outcomes            = [0, 0, 0, 0]
 var games               = 100000
 
+console.log("\n\n\x1b[90mRunning...\n\n")
+
 for(let i = 0; i < games; i++) await main();
 
-console.log(`Lost: ${outcomes[0]} \nWon: ${outcomes[1] + outcomes[3]} \n\nWon by dnq: ${outcomes[3]} \nTied: ${outcomes[2]}\n\nResult: player lost ${outcomes[0]}/${games}`)
+console.log(`\x1b[36mResult: player lost ${outcomes[0]}/${games} \n\nDetails: \nLost: ${outcomes[0]} \nWon: ${outcomes[1] + outcomes[3]} \nWon by dnq: ${outcomes[3]} \nTied: ${outcomes[2]}`)
 
 async function main()
 {
