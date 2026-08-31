@@ -32,11 +32,11 @@ const multipliers =
 }
 
 var outcomes            = [0, 0, 0, 0]
-var games               = 0
+var games               = 10000
 
 for(let i = 0; i < games; i++) await main();
 
-console.log(`Lost: ${outcomes[0]} \nWon: ${outcomes[1] + outcomes[3]} \n\n Won by dnq: ${outcomes[3]} \nTied: ${outcomes[2]}\n\n Result: player lost ${outcome[0]}/${games}`)
+console.log(`Lost: ${outcomes[0]} \nWon: ${outcomes[1] + outcomes[3]} \n\n Won by dnq: ${outcomes[3]} \nTied: ${outcomes[2]}\n\n Result: player lost ${outcomes[0]}/${games}`)
 
 async function main()
 {
@@ -67,10 +67,6 @@ async function main()
     }
 
     const final = await wincon([...hand, ...community_hand], [...dealer_hand, ...community_hand])
-
-    console.log(hand)
-    console.log(community_hand)
-    console.log(dealer_hand)
 
     outcomes[final.won]++
 
