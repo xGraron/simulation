@@ -32,17 +32,19 @@ const multipliers =
 }
 
 var outcomes            = [0, 0, 0, 0]
-var games               = 100000
+var games               = 1000000
 var color               = ""
 
-console.log("\n\n\x1b[90mRunning...\n\n")
+const started           = Date.now()
+
+console.log(`\n\n\x1b[90mSimulating ${games} games of Poker...\n\n`)
 
 for(let i = 0; i < games; i++) await main();
 
 if(outcomes[0] < (outcomes[1] + outcomes[3]))   color = "\x1b[31m"
 else                                            color = "\x1b[32m"
 
-console.log(`\x1b[36mResult: player lost ${color}${outcomes[0]}/${games} \n\n\x1b[36mDetails: \nLost: ${outcomes[0]} \nWon: ${outcomes[1] + outcomes[3]} \nWon by dnq: ${outcomes[3]} \nTied: ${outcomes[2]}`)
+console.log(`\x1b[36mResult: player lost ${color}${outcomes[0]}/${games} \n\n\x1b[36mDetails: \nLost: ${outcomes[0]} \nWon: ${outcomes[1] + outcomes[3]} \nWon by dnq: ${outcomes[3]} \nTied: ${outcomes[2]} \nTook: ${Date.now() - started}ms`)
 
 async function main()
 {
