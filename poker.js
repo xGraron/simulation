@@ -32,7 +32,7 @@ const multipliers =
 }
 
 var outcomes            = [0, 0, 0, 0]
-var games               =
+var games               = 0
 
 for(let i = 0; i < games; i++) await main();
 
