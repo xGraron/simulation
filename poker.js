@@ -32,10 +32,10 @@ const multipliers =
 }
 
 var outcomes            = [0, 0, 0, 0]
-var games               = 10000
 var color               = ""
 
-const started           = Date.now()
+const games     = Number(process.argv[2]) || 10
+const started   = Date.now()
 
 console.log(`\n\n\x1b[90mSimulating ${games} games of Poker...\n\n`)
 
@@ -48,16 +48,15 @@ console.log(`\x1b[36mResult: player lost ${color}${outcomes[0]}/${games}`)
 console.group(`\x1b[0m`)
 console.table(new final(outcomes[1], outcomes[0], outcomes[3], outcomes[2]))
 console.groupEnd("Details")
-
-//console.log(`\x1b[36mResult: player lost ${color}${outcomes[0]}/${games} \n\n\x1b[36mDetails: \nLost: ${outcomes[0]} \nWon: ${outcomes[1] + outcomes[3]} \nWon by dnq: ${outcomes[3]} \nTied: ${outcomes[2]} \nTook: ${Date.now() - started}ms`)
+console.log(`${outcomes[3]}/${outcomes[0]} \x1b[36mwere the result of dnq`)
 
 function final(won, lost, dnq, tied)
 {
-    this.won    = won;
+    this.won    = won + dnq;
     this.lost   = lost;
-    this.dnq    = dnq;
     this.tied   = tied;
 }
+
 async function main()
 {
     const deck 		= await create()
