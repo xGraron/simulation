@@ -32,27 +32,31 @@ const multipliers =
 }
 
 var outcomes            = [0, 0, 0, 0]
+//                      0 = lost, 1 = won, 2 = tied, 3 = lost (dnq)
 var color               = ""
 
 const games     = Number(process.argv[2]) || 10
 const started   = Date.now()
 
 console.log(`\n\n\x1b[90mSimulating ${games} games of Poker...\n\n`)
+console.time("took")
+
 
 for(let i = 0; i < games; i++) await main();
 
-if(outcomes[0] < (outcomes[1] + outcomes[3]))   color = "\x1b[31m"
+if(outcomes[0] + outcomes[3] < (outcomes[1]))   color = "\x1b[31m"
 else                                            color = "\x1b[32m"
 
-console.log(`\x1b[36mResult: player lost ${color}${outcomes[0]}/${games}`)
+console.log(`\x1b[36mResult: player lost ${color}${outcomes[0] + outcomes[3]}/${games}`)
 console.group(`\x1b[0m`)
-console.table(new final(outcomes[1], outcomes[0], outcomes[3], outcomes[2]))
+console.table(new final(outcomes[1], outcomes[0] + outcomes[3], outcomes[2]))
 console.groupEnd("Details")
-console.log(`${outcomes[3]}/${outcomes[0]} \x1b[36mwere the result of dnq`)
+console.log(`${outcomes[3]}/${outcomes[0]} \x1b[36mwere the result of dnq\x1b[90m`)
+console.timeEnd("took")
 
-function final(won, lost, dnq, tied)
+function final(won, lost, tied)
 {
-    this.won    = won + dnq;
+    this.won    = won;
     this.lost   = lost;
     this.tied   = tied;
 }
@@ -247,7 +251,7 @@ async function wincon(player_cards, dealer_cards)
     const playerFinal = await calculate(player_cards)
     const dealerFinal = await calculate(dealer_cards)
 
-    const qualified = qualifier(dealerFinal)
+    const qualified = qualifier(playerFinal)
 
     if(!qualified)
     {
@@ -273,14 +277,14 @@ async function wincon(player_cards, dealer_cards)
     return { won: 2 }
 }
 
-function qualifier(dealerFinal)
+function qualifier(playerFinal)
 {
-    if (dealerFinal.rank > 2) return true;
+    if (playerFinal.rank > 2) return true;
 
-    if (dealerFinal.hand === "Pair")
+    if (playerFinal.hand === "Pair")
     {
-        const pairVal = dealerFinal.kickers[0]
-        if(pairVal >= 4)	return true;
+        const pairVal = playerFinal.kickers[0]
+        if(pairVal >= 2)	return true;
         else  				return false;
     }
 }
