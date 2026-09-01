@@ -1,4 +1,5 @@
-const { Random }        = require("random-js")
+import { Random } from "random-js"
+
 const random            = new Random()
 const deck_templates    =
 {
@@ -135,7 +136,4 @@ async function remove()
 }
 
 
-module.exports =
-{
-    create, draw, burn, remove
-}
+export { create, draw, burn, remove }
