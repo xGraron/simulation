@@ -10,6 +10,8 @@ var c2          = ""
 
 const games     = Number(process.argv[2]) || 10
 const emojis    = Number(process.argv[3]) || 5
+const small     = Number(process.argv[4]) || 75
+const big       = Number(process.argv[5]) || 500
 const started   = Date.now()
 
 console.log(`\n\n\x1b[90mSimulating ${games} games of Slots...\n\n`)
@@ -45,12 +47,12 @@ async function main()
     if(a === b && a === c)
     {
         outcomes[1]++
-        winnings += 500
+        winnings += big
     }
     else if( a === b || b === c || a === c)
     {
         outcomes[1]++
-        winnings += 75
+        winnings += small
     }
     else  outcomes[0]++;
 }
