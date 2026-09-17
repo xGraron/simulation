@@ -6,6 +6,7 @@ var outcomes            = [0, 0] //0 = lost, 1 = won
 var color               = ""
 
 const games     = Number(process.argv[2]) || 10
+const emojis    = Number(process.argv[3]) || 5
 const started   = Date.now()
 
 console.log(`\n\n\x1b[90mSimulating ${games} games of Slots...\n\n`)
@@ -29,7 +30,7 @@ async function main()
     //spinning
     for(let i = 0; i < 3; i++)
     {
-        payline.push(random.integer(0, 5))
+        payline.push(random.integer(0, emojis - 1))
     }
 
     const [a, b, c] = payline
