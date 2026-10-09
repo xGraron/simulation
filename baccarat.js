@@ -1,7 +1,10 @@
 import { create, draw, burn, remove } from './cardHandler.js'
 
-main()
+var outcomes    = [0, 0] //0 = bank, 1 = player
 
+const games     = Number(process.argv[2]) || 10
+const threshold = Number(process.argv[3]) || 7
+const started   = Date.now()
 const values =
 {
     "Ace": 		1,
@@ -10,14 +13,22 @@ const values =
     "King": 	10
 }
 
+console.log(`\n\n\x1b[90mSimulating ${games} games of Baccarat...\n\n`)
+console.time("took")
+
+for(let i = 0; i < games; i++) await main();
+
+console.log(`\x1b[36mResult: ${outcomes[0]}-${outcomes[1]}`)
+console.timeEnd("took")
+
 async function main()
 {
     const deck 		= await create()
 
     var player          = 0
     var player_hand     = []
-    var bank            = 0
-    var bank_hand       = []
+    var banker          = 0
+    var banker_hand     = []
 
     const initial_draw  = await draw()
     const toburn        = values[initial_draw.card] || initial_draw.card
@@ -33,32 +44,32 @@ async function main()
         const c2 = await draw()
 
         player  += values[c1.card] || c1.card
-        bank    += values[c2.card] || c2.card
+        banker  += values[c2.card] || c2.card
 
         player_hand.push(c1.suited)
-        bank_hand.push(c2.suited)
+        banker_hand.push(c2.suited)
 
         player  = player % 10
-        bank    = bank % 10
+        banker  = banker % 10
     }
 
-    while(player < 7 && bank < 7)
+    while(player < threshold && banker < threshold)
     {
         const c1 = await draw()
         const c2 = await draw()
 
         player  += values[c1.card] || c1.card
-        bank    += values[c2.card] || c2.card
+        banker  += values[c2.card] || c2.card
 
         player_hand.push(c1.suited)
-        bank_hand.push(c2.suited)
+        banker_hand.push(c2.suited)
 
         player  = player % 10
-        bank    = bank % 10
+        banker  = banker % 10
     }
 
-    console.log(player + " - " + player_hand)
-    console.log(bank + " - " + bank_hand)
+    if(banker > player) outcomes[0]++
+    else                outcomes[1]++
 
     await remove()
 
