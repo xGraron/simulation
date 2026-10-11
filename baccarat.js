@@ -1,6 +1,6 @@
 import { create, draw, burn, remove } from './cardHandler.js'
 
-var outcomes    = [0, 0] //0 = bank, 1 = player
+var outcomes    = [0, 0, 0] //0 = bank, 1 = player, 2 = tie
 
 const games     = Number(process.argv[2]) || 10
 const threshold = Number(process.argv[3]) || 7
@@ -18,7 +18,7 @@ console.time("took")
 
 for(let i = 0; i < games; i++) await main();
 
-console.log(`\x1b[36mResult: ${outcomes[0]}-${outcomes[1]}`)
+console.log(`\x1b[36mResult: ${outcomes[0]}-${outcomes[1]} (${outcomes[2]})`)
 console.timeEnd("took")
 
 async function main()
@@ -68,8 +68,9 @@ async function main()
         banker  = banker % 10
     }
 
-    if(banker > player) outcomes[0]++
-    else                outcomes[1]++
+    if(banker > player)         outcomes[0]++
+    else if(banker < player)    outcomes[1]++
+    else                        outcomes[2]++
 
     await remove()
 
